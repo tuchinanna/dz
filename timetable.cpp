@@ -108,5 +108,3 @@ void printSchedule(const std::vector<Timetable>& timetables) {
         }
     }
 }
-
-
