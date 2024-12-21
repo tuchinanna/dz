@@ -1,0 +1,26 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "C/C++ Runner: Debug Session",
+            "type": "lldb",
+            "request": "launch",
+            "args": [],
+            "cwd": "/Users/annatucina/projects/dz",
+            "program": "/Users/annatucina/projects/dz/build/Debug/outDebug"
+        },
+        {
+            "name": "C/C++: clang++ сборка и отладка активного файла",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${fileDirname}/${fileBasenameNoExtension}",
+            "args": ["teachers_2.txt"],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb",
+            "preLaunchTask": "C/C++: clang++ сборка активного файла"
+        }
+    ]
+}
