@@ -34,7 +34,6 @@ void readTeachersFromFile(const std::string& filename, std::vector<Teacher>& tea
                 std::string day = line.substr(0, 2); // Первые 2 символа - это день
                 std::string slots = line.substr(3);   // Остальная часть - временные слоты
                 std::stringstream ss(slots);
-                // ss.ignore(1);
 
                 // Разделяем временные слоты по запятой и добавляем в availability
                 std::string slot;
@@ -69,7 +68,6 @@ void generateSchedule(std::vector<Teacher>& teachers, std::vector<Timetable>& ti
                     if (classCount < maxClassesPerDay && timetable.classes[slot].empty()) {
                         timetable.classes[slot] = teachers[i].name; // Добавляем слот и имя преподавателя
                         classCount++;
-
                         if (w1>0){
                             std::string W2 = slot.substr(3);
                             int w2 = stoi(W2);
