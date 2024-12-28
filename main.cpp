@@ -11,8 +11,6 @@ int main(int argc, char* argv[]) {
     readTeachersFromFile(argv[1], teachers);
 
 
-
-
     if (teachers.size() < 15) {
         std::cerr << "Ошибка: должно быть не менее 15 преподавателей." << std::endl;
         return 1;

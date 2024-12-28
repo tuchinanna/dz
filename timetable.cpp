@@ -50,32 +50,56 @@ void readTeachersFromFile(const std::string& filename, std::vector<Teacher>& tea
         teachers.push_back(currentTeacher);
     }
 }
-
+std::vector<std::string> useDays;
 void generateSchedule(std::vector<Teacher>& teachers, std::vector<Timetable>& timetables) {
     const std::vector<std::string> days = {"mn", "tu", "we", "th", "fr", "sa"};
     const int maxClassesPerDay = 4;
 
-    for (const auto& day : days) {
+    for (int j = 0; j < days.size(); j++) {
         Timetable timetable;
-        timetable.day = day;
+        timetable.day = days[j];
         int classCount = 0;
+        int window = 0;
+        std::string W1 = "";
+        int w1 = 0;
 
         for (int i = 0; i < teachers.size(); i++) {            
-            if (teachers[i].availability.count(day) > 0 && !teachers[i].filled) {
-                for (const auto& slot : teachers[i].availability.at(day)) {
+            if (teachers[i].availability.count(days[j]) > 0 && !teachers[i].filled) {
+                for (const auto& slot : teachers[i].availability.at(days[j])) {
                     if (classCount < maxClassesPerDay && timetable.classes[slot].empty()) {
                         timetable.classes[slot] = teachers[i].name; // Добавляем слот и имя преподавателя
                         classCount++;
+
+                        if (w1>0){
+                            std::string W2 = slot.substr(3);
+                            int w2 = stoi(W2);
+                            if(fabs(w2 - w1) > 1){
+                                if (w2 > w1){
+                                    window = window + (w2 - w1 - 1);
+                                }
+                                if (w2 < w1){
+                                    window = window + (w2 - w1);
+                                }
+                            }
+                        }
+                        W1 = slot.substr(3);
+                        w1 = stoi(W1);
                         teachers[i].filled = true;
                         break;
                     } else {
                         break; // Прекращаем добавление, если достигли лимита пар в день
                     }
                 }
+
             }
         }
-
         timetables.push_back(timetable);
+        if (classCount > 0){
+            useDays.push_back(days[j]);
+        }
+        if (window > 1){
+            j--;
+        }
     }
 }
 
@@ -85,8 +109,8 @@ void saveTimetable(const std::vector<Timetable>& timetables, const std::string& 
         std::cerr << "Не удалось открыть файл для записи: " << filename << std::endl;
         return;
     }
-
-    for (const auto& timetable : timetables) {
+    if (useDays.size() == 5){
+        for (const auto& timetable : timetables) {
         if (!timetable.classes.empty()) {
             file << timetable.day << ":\n";
             for (const auto& cls : timetable.classes) {
@@ -94,17 +118,23 @@ void saveTimetable(const std::vector<Timetable>& timetables, const std::string& 
             }
         }
     }
-
+    }
     file.close();
 }
  
 void printSchedule(const std::vector<Timetable>& timetables) {
-    for (const auto& timetable : timetables) {
-        if (!timetable.classes.empty()) {
-            std::cout << timetable.day << ":\n";
-            for (const auto& cls : timetable.classes) {
-                std::cout << cls.first << ": " << cls.second << "\n"; // Выводим слот и имя преподавателя
+    if(useDays.size() == 5){
+        for (const auto& timetable : timetables) {
+            if (!timetable.classes.empty()) {
+                std::cout << timetable.day << ":\n";
+                for (const auto& cls : timetable.classes) {
+                    std::cout << cls.first << ": " << cls.second << "\n"; // Выводим слот и имя преподавателя
+                }
             }
         }
+    }else{
+        std::cerr << "Не удалось составить расписание" << std::endl;
+        return; 
     }
+        
 }

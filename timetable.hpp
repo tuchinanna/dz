@@ -7,6 +7,7 @@
 #include <vector>
 #include <string>
 #include <sstream>
+#include <cmath>
 
 // Структура для хранения информации о преподавателе
 struct Teacher {
